@@ -97,6 +97,9 @@ class SimpleImmutableBSTTests {
   @SuppressWarnings("unchecked")
   @Test
   void testSet() {
+    if (OBSERVE) {
+      pen.println("Testing set using " + Arrays.toString(pairs));
+    } //if
     // Set up an array of trees of gradually increasing size
     trees = new SimpleImmutableBST[pairs.length + 1];
     SimpleImmutableBST<String, Integer> bst =
@@ -104,6 +107,9 @@ class SimpleImmutableBSTTests {
     checkTree(bst, 0);
     trees[0] = bst;
     for (int i = 0; i < pairs.length; i++) {
+      if (OBSERVE) {
+        pen.println("Setting " + pairs[i]);
+      }
       bst = bst.set(pairs[i].key(), pairs[i].value());
       checkTree(bst, i + 1);
       trees[i + 1] = bst;
@@ -120,7 +126,7 @@ class SimpleImmutableBSTTests {
   @Test
   void testRemove() {
     if (OBSERVE) {
-      pen.println("Using " + Arrays.toString(pairs));
+      pen.println("Testing remove; building with " + Arrays.toString(pairs));
     } //if
     // Build a tree with all of the keys.
     SimpleImmutableBST<String, Integer> bst =
@@ -133,6 +139,9 @@ class SimpleImmutableBSTTests {
     // Fill in the trees array by gradually removing elements from
     // the tree.
     MiscUtils.randomlyPermute(pairs);
+    if (OBSERVE) {
+      pen.println("Removing in this order " + Arrays.toString(pairs));
+    } //if
     trees = new SimpleImmutableBST[pairs.length + 1];
     trees[pairs.length] = bst;
     if (OBSERVE) {
@@ -147,10 +156,6 @@ class SimpleImmutableBSTTests {
       } // if
       bst = bst.remove(key);
       trees[i] = bst;
-      if (OBSERVE) {
-        bst.dump(pen);
-      } // if
-
       checkTree(bst, i);
     } // for
 
@@ -167,6 +172,11 @@ class SimpleImmutableBSTTests {
    * appropriate key/value pairs, does not contain other key/value pairs).
    */
   void checkTree(SimpleImmutableBST<String, Integer> bst, int size) {
+    if (OBSERVE) {
+      bst.dump(pen);
+      pen.println();
+    } // if
+
     // Checking size
     assertEquals(size, bst.size(), "Incorrect size");
 
